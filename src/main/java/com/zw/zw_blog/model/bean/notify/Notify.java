@@ -4,16 +4,15 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data // Lombok 自动生成 Getter, Setter, toString 等
-@NoArgsConstructor // Lombok 自动生成无参构造函数
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 @TableName("blog_notify") // 强制表名为 blog_notify
 public class Notify implements Serializable {
     
