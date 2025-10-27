@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class RegisterRequest implements Serializable {
+public class RegisterRequestDTO implements Serializable {
     private static final long serialVersionUID = 3191241716373120793L;
 
     @NotBlank(message = "用户名不能为空")

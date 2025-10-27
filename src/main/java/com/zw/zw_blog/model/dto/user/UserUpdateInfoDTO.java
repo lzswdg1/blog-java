@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class UpdateInfo implements Serializable {
+public class UserUpdateInfoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @NotBlank(message = "不能为空")

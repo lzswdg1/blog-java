@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class QueryUser  extends PageQueryDTO implements Serializable {
+public class UserQueryDTO extends PageQueryDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // 对应 controller/user/index.js getUserList 方法
