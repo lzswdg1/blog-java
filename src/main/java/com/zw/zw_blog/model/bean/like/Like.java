@@ -24,7 +24,7 @@ public class Like implements Serializable {
     
     // for_id: 点赞的id 文章id 说说id 留言id
     @TableField("for_id")
-    private Integer forId;
+    private Integer typeId;
     
     // user_id: 点赞用户id
     @TableField("user_id")

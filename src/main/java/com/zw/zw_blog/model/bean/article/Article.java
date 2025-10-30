@@ -20,7 +20,10 @@ public class Article implements Serializable {
     
     @TableField("article_title")
     private String articleTitle;
-    
+
+    @TableField("article_password")
+    private String articlePassword;
+
     @TableField("author_id")
     private Integer authorId;
     

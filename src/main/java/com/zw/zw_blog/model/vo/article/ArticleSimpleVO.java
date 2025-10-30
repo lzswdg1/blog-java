@@ -1,7 +1,9 @@
 package com.zw.zw_blog.model.vo.article;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zw.zw_blog.model.vo.tag.TagVO;
+import com.zw.zw_blog.model.vo.user.UserSimpleVO;
 import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -25,4 +27,18 @@ public class ArticleSimpleVO implements Serializable {
     private String authorName;
     private String categoryName;
     private List<TagVO> tags;
+
+    /**
+     * 作者 ID (内部使用，不返回给前端)
+     */
+    @JsonIgnore // 2. 添加 @JsonIgnore 注解，防止 Jackson 将其序列化到 JSON 中
+    private Integer authorId;
+
+    /**
+     * 分类 ID (内部使用，不返回给前端)
+     */
+    @JsonIgnore // 2. 添加 @JsonIgnore 注解
+    private Integer categoryId;
+
+    private UserSimpleVO author;
 }

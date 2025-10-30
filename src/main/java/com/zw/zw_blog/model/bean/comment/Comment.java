@@ -26,14 +26,17 @@ public class Comment implements Serializable {
     
     // type: 评论类型 1 文章 2 说说 3 留言 ...
     private Integer type;
-    
+
+
+    private Integer  articleId;
+
     // for_id: 评论的对象id
     @TableField("for_id")
     private Integer forId;
     
     // from_id: 评论人id
     @TableField("from_id")
-    private Integer fromId;
+    private Integer UserId;
     
     // from_name: 评论人昵称
     @TableField("from_name")

@@ -41,7 +41,7 @@ public enum ResultCode {
     TAG_EXIST(50001, "标签已存在"),
     TAG_NOT_EXIST(50002, "标签不存在"),
     TAG_HAS_ARTICLE(50003, "该标签下存在文章，无法删除"), // Service 层逻辑
-
+    TAG_ERRORWITH_ARTICLE(5004,"标签与文章关联失败"),
     // === 评论模块 (6xxxx) ===
     // 对应 ERRORCODE.COMMENT = "10007"
     COMMENT_NOT_EXIST(60001, "评论不存在"),

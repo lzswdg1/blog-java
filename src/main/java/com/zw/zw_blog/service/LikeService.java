@@ -46,11 +46,11 @@ public interface LikeService extends IService<Like> {
      * @param userId 当前用户ID
      * @return Map<Long, Boolean> (对象ID -> 是否已赞)
      */
-    Map<Long, Boolean> getIsLikedBatch(List<Long> typeIds, Integer type, Long userId);
+//    Map<Long, Boolean> getIsLikedBatch(List<Long> typeIds, Integer type, Long userId);
 
     /**
      * 根据对象ID和类型删除所有点赞记录
      * (供删除文章/评论/说说时调用)
      */
-    boolean removeLikes(Long typeId, Integer type);
+//    boolean removeLikes(Long typeId, Integer type);
 }
