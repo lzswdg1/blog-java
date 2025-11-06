@@ -39,4 +39,7 @@ public class CommentCreateDTO implements Serializable {
      * 这个字段也是可选的
      */
     private Long replyUserId;
+
+    private Long toId;
+    private String toName;
 }

@@ -28,7 +28,7 @@ public interface LinkService extends IService<Links> {
      * 删除友链 (管理员操作)
      * (对应 deleteLink)
      */
-    boolean removeLink(Long id);
+    boolean removeLinks(Long id,Integer type);
 
     /**
      * 分页获取友链列表 (后台管理)

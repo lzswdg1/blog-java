@@ -15,11 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -51,9 +50,8 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
     @Override
     public  boolean toggleLike(Long userId, Long typeId, Integer type){
         if(userId == null || typeId == null || type == null){
-            throw new BusinessException(ResultCode.PARAM_VALIDATE_FAILED);
-            log.info("点赞/取消点赞失败，参数不完整 -userId: {} typeId: {} type: {} ",userId,typeId,type);
-            return false;
+            log.info("点赞/取消点赞失败，参数不完整 -userId: {}, typeId: {}, type: {} ",userId,typeId,type);
+            throw new  BusinessException(ResultCode.PARAM_VALIDATE_FAILED);
         }
         QueryWrapper<Like> liekWrapper = new QueryWrapper<>();
         liekWrapper.eq("type_id",typeId);
@@ -151,7 +149,7 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
     public List<Integer> getLikeList(Long typeId,Integer type){
         //参数校验
         if(typeId == null || type == null){
-            log.warn(log.warn("getLikeList 查询失败：typeId 或 type 为 null");
+            log.warn("getLikeList 查询失败：typeId 或 type 为 null");
             return Collections.emptyList(); // 返回一个不可变的空列表);
         }
 
@@ -173,5 +171,81 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
                 .distinct()
                 .collect(Collectors.toList());
         return  userIdList;
+    }
+
+    @Override
+    public boolean isLiked(Long userId, Long typeId,Integer type){
+        //参数校验
+        if(userId ==null|| typeId ==null||type==null){
+            log.warn("isLiked 检查失败：参数不完整。userId={}, typeId={}, type={}", userId, typeId, type);
+            return false; // 参数不全，不可能存在点赞记录
+        }
+        QueryWrapper<Like> likeWrapper = new QueryWrapper<>();
+        likeWrapper.eq("user_id",userId.intValue());
+        likeWrapper.eq("type_id",typeId.intValue());
+        likeWrapper.eq("type",type);
+
+        return likeMapper.exists(likeWrapper);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeLikes(Long typeId,Integer type){
+        if(typeId ==null|| type==null){
+            log.warn("removeLikes 失败：typeId 或 type 为 null");
+            // 根据业务逻辑，参数不全可以认为 "删除成功" (没有东西可删)，或者抛出异常
+            return false;
+        }
+        QueryWrapper<Like> likeWrapper = new QueryWrapper<>();
+        likeWrapper.eq("type_id",typeId.intValue());
+        likeWrapper.eq("type",type);
+
+        try{
+            int deleteCount = likeMapper.delete(likeWrapper);
+            log.info("删除关联点赞记录 - Type ID: {}, Type: {}, 成功删除 {} 条记录", typeId, type, deleteCount);
+
+            // 无论 deletedRows 是 0 (本就没点赞) 还是 > 0 (删除成功)，操作都算成功
+            return true;
+        } catch(Exception e){
+            log.error("删除关联点赞记录时出错 - Type ID: {}, Type: {}", typeId, type, e);
+            // 抛出异常以触发事务回滚
+            throw new BusinessException(ResultCode.INTERNAL_SERVER_ERROR.getCode(),e.getMessage());
+        }
+    }
+
+    @Override
+    public Map<Long,Integer> getLikeCounts(List<Long> typeIds,Integer type){
+        if(CollectionUtils.isEmpty(typeIds)||type==null){
+            log.warn("getLikeCounts 查询失败：typeIds 列表为空或 type 为 null");
+            return Collections.emptyMap(); // 返回空 Map
+        }
+
+        List<Integer> intTypeIds = typeIds.stream()
+                .mapToInt(Long::intValue)
+                .boxed()
+                .collect(Collectors.toList());
+
+        QueryWrapper<Like> likeWrapper = new QueryWrapper<>();
+        likeWrapper.select("type_id","count(*) as count");
+        likeWrapper.eq("type",type);
+        likeWrapper.in("type_id",intTypeIds);
+        likeWrapper.groupBy("type_id");
+
+        List<Map<String,Object>> results = likeMapper.selectMaps(likeWrapper);
+
+        if(CollectionUtils.isEmpty(results)){
+            return Collections.emptyMap();
+        }
+        try{
+            Map<Long,Integer> countMap = results.stream()
+                    .collect(Collectors.toMap(
+                            map ->((Number) map.get("type_id")).longValue(),
+                            map ->((Number)map.get("count")).intValue()
+                    ));
+            return countMap;
+        } catch (Exception e) {
+            log.error("getLikeCounts 转换 Map 失败", e);
+            return Collections.emptyMap();
+        }
     }
 }

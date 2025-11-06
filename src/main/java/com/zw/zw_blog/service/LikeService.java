@@ -39,6 +39,9 @@ public interface LikeService extends IService<Like> {
      */
     Map<Long, Integer> getLikeCounts(List<Long> typeIds, Integer type);
 
+
+
+    boolean removeLikes(Long userId, Integer type);
     /**
      * 批量检查当前用户是否已点赞
      * @param typeIds 对象ID列表

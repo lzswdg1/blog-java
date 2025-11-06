@@ -20,4 +20,7 @@ public class CommentQueryDTO extends PageQueryDTO {
      */
     @NotNull(message = "文章ID不能为空")
     private Long articleId;
+
+    private Integer type;
+    private Integer forId;
 }
