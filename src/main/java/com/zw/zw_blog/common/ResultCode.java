@@ -29,7 +29,7 @@ public enum ResultCode {
     // 对应 ERRORCODE.ARTICLE = "10004"
     ARTICLE_NOT_EXIST(30001, "文章不存在"),
     ARTICLE_PASSWORD_ERROR(30002, "文章密码错误"),
-
+    DATA_NOT_EXIST(30003,"数据不存在"),
     // === 分类模块 (4xxxx) ===
     // 对应 ERRORCODE.CATEGORY = "10005"
     CATEGORY_EXIST(40001, "分类已存在"),
