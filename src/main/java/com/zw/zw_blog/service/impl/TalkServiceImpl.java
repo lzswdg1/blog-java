@@ -1,6 +1,7 @@
 package com.zw.zw_blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -74,8 +75,8 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
                          return photo;
                      }).collect(Collectors.toList());
              photoList.forEach(talkPhotoMapper::insert);
-             return talk;
          }
+         return talk;
      }
      @Override
     @Transactional(rollbackFor = Exception.class)
@@ -115,7 +116,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteTalk(Long id,Integer status){
          if(status==1||status==2){
-             return this.update(new LambdaQueryWrapper<Talk>()
+             return this.update(new LambdaUpdateWrapper<Talk>()
                      .eq(Talk::getId,id)
                      .set(Talk::getStatus,3));
          }else{
@@ -126,35 +127,35 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
 
      @Override
     public boolean togglePublic (Long id,Integer status){
-         return this.update(new LambdaQueryWrapper<Talk>()
+         return this.update(new LambdaUpdateWrapper<Talk>()
                  .eq(Talk::getId,id)
                  .set(Talk::getStatus,status));
     }
     @Override
     public boolean revertTalk(Long id){
-         return this.update(new LambdaQueryWrapper<Talk>()
+         return this.update(new LambdaUpdateWrapper<Talk>()
                  .eq(Talk::getId,id)
                  .set(Talk::getStatus,1));
     }
 
     @Override
     public boolean talkLike(Long id){
-         return this.update(new LambdaQueryWrapper<Talk>()
+         return this.update(new LambdaUpdateWrapper<Talk>()
                  .eq(Talk::getId,id)
                  .setSql("like_times = like_times + 1"));
     }
 
     @Override
     public boolean cancelTalkLike(Long id){
-         return this.update(new LambdaQueryWrapper<Talk>()
+         return this.update(new LambdaUpdateWrapper<Talk>()
                  .eq(Talk::getId,id)
                  .setSql("like_times = like_times - 1")
-         )
+         );
     }
 
     @Override
     public boolean toggleTop(Long id,Integer isTop){
-         return this.update(new LambdaQueryWrapper<Talk>()
+         return this.update(new LambdaUpdateWrapper<Talk>()
                  .eq(Talk::getId,id)
                  .set(Talk::getIsTop,isTop));
     }
@@ -219,7 +220,7 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk> implements Ta
         if(!userIds.isEmpty()){
             List<User> users = userMapper.selectBatchIds(userIds);
             for(User user : users){
-                UserSimpleVO vo = new UserSimpleVO();`
+                UserSimpleVO vo = new UserSimpleVO();
                 BeanUtils.copyProperties(user,vo);
                 userMap.put(user.getId(),vo);
             }

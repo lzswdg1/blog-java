@@ -15,34 +15,37 @@ import java.time.LocalDateTime;
 @ToString
 @TableName("blog_notify") // 强制表名为 blog_notify
 public class Notify implements Serializable {
-    
-    // 数据库主键 ID，MyBatis-Plus 自动递增
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    
-    // message: 通知内容
+
     private String message;
-    
-    // user_id: 通知给谁
+
     @TableField("user_id")
-    private Integer userId;
-    
-    // type: 通知类型 1 文章 2 说说 3 留言 4 友链
-    private Integer type;
-    
-    // to_id: 说说或者是文章的id 用于跳转
+    private Long userId; // <-- 必须从 Integer 修改为 Long
+
+    private Integer type; // (类型可以保持 Integer)
+
     @TableField("to_id")
-    private Integer toId;
-    
-    // isView: 是否被查看 1 没有 2 已经查看, 默认值 1
-    @TableField("isView")
-    private Integer isView = 1;
-    
-    // createdAt 字段
+    private Long toId; // <-- 必须从 Integer 修改为 Long
+
+    @TableField("trigger_user_id")
+    private Long triggerUserId; // (已经是 Long)
+
+    @TableField("receive_user_id")
+    private Long receiveUserId; // (已经是 Long)
+
+    @TableField("isView") // 确保这里的字段名 (isView) 和 ServiceImpl 中的 (isRead) 一致
+    private Integer isRead; // (状态可以保持 Integer, 假设 isView 和 isRead 是一个东西)
+
+    @TableField("article_id")
+    private Long articleId; // (已经是 Long)
+
+    @TableField("comment_id")
+    private Long commentId; // (已经是 Long)
+
     @TableField("createdAt")
     private LocalDateTime createdAt;
-    
-    // updatedAt 字段
+
     @TableField("updatedAt")
     private LocalDateTime updatedAt;
 }

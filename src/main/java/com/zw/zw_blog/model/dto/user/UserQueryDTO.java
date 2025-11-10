@@ -13,4 +13,6 @@ public class UserQueryDTO extends PageQueryDTO implements Serializable {
     // 对应 controller/user/index.js getUserList 方法
     private String nickName;
     private Integer role;
+    private String username;
+    private String password;
 }
