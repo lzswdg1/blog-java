@@ -1,9 +1,7 @@
 package com.zw.zw_blog.model.bean.recommend;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.io.Serializable;
@@ -21,7 +19,21 @@ public class Recommend implements Serializable {
     
     // title: 推荐网站标题
     private String title;
-    
+    private String cover;
+
+    private String content;
+    @TableField("article_id")
+    private Long articleId;
+
+    private Integer isTop;
+    private Integer sort;
+    private String remark;
+
+    @TableLogic
+    @JsonIgnore
+    @TableField("is_delete")
+    private Integer isDelete;
+
     // link: 网站地址
     private String link;
     

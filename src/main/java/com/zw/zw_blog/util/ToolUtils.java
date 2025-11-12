@@ -1,5 +1,6 @@
 package com.zw.zw_blog.util;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.lionsoul.ip2region.xdb.Searcher; // 假设使用 ip2region
 import org.springframework.core.io.ClassPathResource;
@@ -65,7 +66,32 @@ public class ToolUtils {
             return "未知";
         }
     }
+    public static String getRequestIp(HttpServletRequest request) {
+        if (request == null) {
+            return "未知";
+        }
+        String ip = request.getHeader("X-Real-IP");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Forwarded-For");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        // 对于 X-Forwarded-For，可能存在多个 IP，取第一个
+        if (ip != null && ip.contains(",")) {
+            ip = ip.split(",")[0].trim();
+        }
 
+        // 对应 Node.js ctx.ip.split(":").pop()
+        if (ip != null && ip.contains(":")) {
+            // 简单处理 IPv6 本机回环地址
+            if ("0:0:0:0:0:0:0:1".equals(ip) || "::1".equals(ip)) {
+                return "127.0.0.1";
+            }
+        }
+
+        return ip;
+    }
     /**
      * 生成随机昵称
      * (对应 Node.js: tool.js -> randomNickname)
