@@ -1,0 +1,7 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: zw_blog_java
+app:
+  admin-password: 123456

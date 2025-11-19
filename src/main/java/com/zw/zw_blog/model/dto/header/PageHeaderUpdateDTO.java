@@ -1,33 +1,26 @@
 package com.zw.zw_blog.model.dto.header;
 
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import org.hibernate.validator.constraints.URL;
-import java.io.Serializable;
 
-/**
- * 对应: PUT /pageHeader/update
- * 替代: controller/header/index.js 中的 updateHeader 方法参数
- * DTOs 是使用 @Data 的安全场景
- */
 @Data
-public class PageHeaderUpdateDTO implements Serializable {
+public class PageHeaderUpdateDTO {
 
-    private static final long serialVersionUID = 1L;
+    @NotBlank(message = "ID 不能为空")
+    private String id;
 
-    /**
-     * 对应 'route_name'
-     * 替代: if (!route_name) 校验
-     */
-    @NotBlank(message = "路由名称不能为空")
-    private String routeName; // Java 中使用驼峰命名
+    @NotBlank(message = "Label 不能为空")
+    private String label;
 
-    /**
-     * 对应 'bg_url'
-     * 替代: if (!bg_url) 校验
-     */
-    @NotBlank(message = "背景图片URL不能为空")
-    @URL(message = "请输入合法的背景图片 URL")
-    private String bgUrl; // Java 中使用驼峰命名
+    @NotBlank(message = "Path 不能为空")
+    private String path;
+
+    @NotBlank(message = "Cover 不能为空")
+    private String cover; // (此字段将映射到 实体类(Entity) 的 bgUrl)
+
+    @NotBlank(message = "Sort 不能为空")
+    private String sort; // (String 类型, service 中会转为 Integer)
+
+    @NotBlank(message = "RouteName 不能为空")
+    private String routeName;
 }

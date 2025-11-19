@@ -13,7 +13,7 @@ import com.zw.zw_blog.util.JwtTokenUtil;
 import com.zw.zw_blog.util.ToolUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,7 +57,7 @@ public class UserController {
         // 1. admin 特殊登录逻辑
         if ("admin".equals(username)) {
             if (!StringUtils.hasText(ADMIN_PASSWORD)) {
-                throw new BusinessException(ResultCode.CONFIG_ERROR, "请在env配置文件里添加超级管理员密码");
+                throw new BusinessException(ResultCode.CONFIG_ERROR.getCode(), "请在env配置文件里添加超级管理员密码");
             }
             if (ADMIN_PASSWORD.equals(password)) {
                 User adminUser = new User();
@@ -101,7 +101,7 @@ public class UserController {
 
         // 对应: isSuperAdmin 中间件 (禁止 admin 修改)
         if ("admin".equals(currentUser.getUsername())) {
-            return Result.error("500", "管理员信息只可通过配置信息修改");
+            return Result.error(500, "管理员信息只可通过配置信息修改");
         }
 
         userService.updateOwnUserInfo(infoDTO, currentUser.getId());
@@ -119,12 +119,12 @@ public class UserController {
 
         // 对应: isSuperAdmin 检查 (admin 密码不能在此修改)
         if ("admin".equals(currentUser.getUsername())) {
-            return Result.error("500", "admin密码只可以通过配置文件env修改");
+            return Result.error(500, "admin密码只可以通过配置文件env修改");
         }
 
         // 对应: if (id == 2) ... (测试用户)
         if (currentUser.getId() == 2L) {
-            return Result.error("500", "测试用户密码不可以修改哦");
+            return Result.error(500, "测试用户密码不可以修改哦");
         }
 
         // ServiceImpl.updatePassword 已包含 verifyUpdatePassword 逻辑
@@ -183,7 +183,7 @@ public class UserController {
 
         User user = userService.getById(id);
         if (user == null) {
-            return Result.error("404", "用户不存在");
+            return Result.error(404, "用户不存在");
         }
 
         // 对应: const { password, username, ip, ...resInfo } = res;

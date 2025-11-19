@@ -9,7 +9,7 @@ public enum ResultCode {
     ERROR(500, "操作失败"), // 通用失败
     PARAM_VALIDATE_FAILED(400, "参数校验失败"), // HTTP 400
     INTERNAL_SERVER_ERROR(500, "服务器内部错误"), // HTTP 500
-
+    PARAM_TYPE_ERROR(600,"id格式错误"),
     // === 认证与授权 (1xxxx) ===
     // 对应 ERRORCODE.AUTH = "10001"
     NO_PERMISSION(10001, "您没有权限访问"), // HTTP 403

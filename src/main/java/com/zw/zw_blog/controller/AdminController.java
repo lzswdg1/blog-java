@@ -261,7 +261,7 @@ public class AdminController {
 
     @PutMapping("/pageHeader/update")
     public Result<?> updatePageHeader(@Valid @RequestBody PageHeaderUpdateDTO headerDTO) { //
-        pageHeaderService.updateHeader(headerDTO);
+        pageHeaderService.updatePageHeaderAdmin(headerDTO);
         return Result.success("修改页头成功", null);
     }
 
@@ -270,7 +270,7 @@ public class AdminController {
     @GetMapping("/statistic/getStatistic")
     public Result<StatisticVO> getStatistic() {
         // 注意：您的 StatisticService 接口是空的，您需要先实现 getStatistic 方法
-        StatisticVO statistic = statisticService.getStatistic();
+        StatisticVO statistic = statisticService.getStatistics();
         return Result.success("获取统计数据成功", statistic);
     }
 }

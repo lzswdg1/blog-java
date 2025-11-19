@@ -13,26 +13,33 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ToString
-@TableName("blog_header") // 强制表名为 blog_header
+@TableName("blog_header")
 public class Header implements Serializable {
-    
-    // 数据库主键 ID，MyBatis-Plus 自动递增
+
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    
-    // route_name: 路由名称
+
     @TableField("route_name")
     private String routeName;
-    
-    // bg_url: 背景图
+
     @TableField("bg_url")
     private String bgUrl;
-    
-    // createdAt 字段
+
     @TableField("createdAt")
     private LocalDateTime createdAt;
-    
-    // updatedAt 字段
+
     @TableField("updatedAt")
     private LocalDateTime updatedAt;
+
+    // (*** 新增字段 ***)
+    @TableField("sort")
+    private Integer sort;
+
+    // (*** 新增字段 ***)
+    @TableField("label")
+    private String label;
+
+    // (*** 新增字段 ***)
+    @TableField("path")
+    private String path;
 }

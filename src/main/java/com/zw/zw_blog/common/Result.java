@@ -23,7 +23,9 @@ public class Result<T> {
     public static <T> Result<T> success() {
         return success(null);
     }
-
+    public static <T> Result<T> success(String msg, T data) {
+        return success(null);
+    }
     public static <T> Result<T> error(ResultCode code) {
         return new Result<>(code.getCode(),code.getMsg(),null);
     }
